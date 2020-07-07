@@ -3,7 +3,7 @@ var ObjectID = require('mongodb').ObjectID; // for new ObjectID(id);
 module.exports = function (app, db) {
     app.post('/washer', (req, res) => {
         // make new washer
-        const washer = { x: req.body.x, y: req.body.y, work: {}, workers: {} };
+        const washer = { x: req.body.x, y: req.body.y, work: [], workers: [] };
         db.collection('washer').insert(washer, (err, result) => {
             if (err) {
                 res.send({ 'error': 'An error has occured' });

@@ -28,30 +28,7 @@ module.exports = function (app, db) {
 
     app.get('/washer', (req, res) => {
         // get all washers
-        const coords = { x: req.body.x, y: req.body.y }
-
-        // if (!req.body.x && !req.body.y) {
-        //     console.log('no x and y');
-        //     // db.collection('washer').find({}, (err, item) => {
-        //     //     if (err) {
-        //     //         res.send({ 'error': 'An error has occured' });
-        //     //     } else {
-        //     //         res.send(item);
-        //     //     }
-        //     // });
-        //     res.send('no x and y');
-        // } else {
-        //     console.log('yes x and y');
-        //     db.collection('washer').findOne(coords, (err, item) => {
-        //         if (err) {
-        //             res.send({ 'error': 'An error has occured' });
-        //         } else {
-        //             res.send(item);
-        //         }
-        //     });
-        // }
-
-        db.collection('washer').findOne(coords, (err, item) => {
+        db.collection('washer').find( {},  { x: { $gte: 0} }).toArray((err, item) => {
             if (err) {
                 res.send({ 'error': 'An error has occured' });
             } else {
@@ -105,17 +82,4 @@ module.exports = function (app, db) {
             }
         });
     });
-
-    // app.put('/washer', (req, res) => {
-    //     // update note by id
-    //     const l_coords = { x: req.body.l_x, y: req.body.l_y };
-    //     const coords = { x: req.body.x, y: req.body.y, work: {}, workers: {} }
-    //     db.collection('washer').update(l_coords, coords, (err, item) => {
-    //         if (err) {
-    //             res.send({ 'error': 'An error has occured' });
-    //         } else {
-    //             res.send(db.collection('washer').findOne(coords));
-    //         }
-    //     });
-    // });
 };

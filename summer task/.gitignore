@@ -3,3 +3,4 @@
 *.txt
 /src/config
 /src/routes/note_routes.js
+/src/text_search/cpp_code

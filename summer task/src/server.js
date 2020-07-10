@@ -8,7 +8,10 @@ const port = 3000;
 MongoClient.connect(db.url, (err, client) => {
     if (err) return console.log(err);
     const database = client.db('pagamovdb');
+
     require('./routes/index')(app, database);
+    require('./text_search/index')(app, database);
+    
     app.listen(port, () => {
         console.log("listen on ", port);
     });

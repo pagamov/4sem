@@ -1,5 +1,6 @@
 var ObjectID = require('mongodb').ObjectID; // for new ObjectID(id);
 var Overlap = require('./overlap_src/main')
+var Shingl = require('./overlap_src/shingl')
 
 module.exports = function (app, db) {
     app.get('/search/:id', (req, res, next) => {
@@ -10,55 +11,42 @@ module.exports = function (app, db) {
             if (err) {
                 res.send({ 'error': 'An error has occured' });
             } else {
-                req.body.t = item.t;
-                // app.use('/search');
-                res.send({ t: item.t, d: item.d });
+                var re = Shingl(req.body.pattern.toLowerCase(), item.data);
+                res.send({ result: re });
             }
         });
     });
 
     app.get('/search', (req, res, next) => {
-        if (!req.body.t) {
+        if (!req.body.title) {
             next();
         } else {
-            const details = {t: req.body.t};
+            const details = {title: req.body.title};
             db.collection('text').findOne(details, (err, item) => {
                 if (err) {
                     res.send({ 'error': 'An error has occured' });
                 } else {
-                    res.send({ r: Overlap(req.body.p, item.d) });
+                    var re = Shingl(req.body.pattern.toLowerCase(), item.data);
+                    res.send({ result: re });
                 }
             });
         }
     });
 
-    function ov(ts, db) {
-        db.collection('text').find( { t: { $in: ts } } , { _id: 0, t: 0, d: 1 }, (err, item) => {
-            return new Promise((resolve, reject) => {
-                if (err) {
-                    reject({ 'error': 'An error has occured' });
-                } else {
-                    console.log('item')
-                    resolve(item.toArray());
-                }
-            });
-        });
-    };
-
     app.get('/search', (req, res, next) => {
         // by not all text
-        if (!req.body.ts) {
+        if (!req.body.titles) {
             next();
         } else {
-            var ts = req.body.ts.split(' ');
-            db.collection('text').find( { t: { $in: ts } } , { _id: 0, t: 0, d: 1 } ).toArray((err, item) => {
+            var ts = req.body.titles.split(' ');
+            db.collection('text').find( { title: { $in: ts } } , { _id: 0, t: 0, d: 1 } ).toArray((err, item) => {
                 if (err) {
                     res.send({ 'error': 'An error has occured' });
                 } else {
                     async function f (req, item) {
                         var result = [];
                         for (const ite of item) {
-                            await result.push([ite._id, ite.t, Overlap(req.body.p, ite.d)]);
+                            await result.push([ite._id, ite.title, Shingl(req.body.pattern.toLowerCase(), ite.data)]);
                         }
                         return result;
                     };
@@ -66,7 +54,6 @@ module.exports = function (app, db) {
                         var result = await f (req, item);
                         res.send(result);
                     };
-
                     o(req, res, item);
                 }
             });
@@ -81,7 +68,7 @@ module.exports = function (app, db) {
                 async function f (req, item) {
                     var result = [];
                     for (const ite of item) {
-                        await result.push([ite._id, ite.t, Overlap(req.body.p, ite.d)]);
+                        await result.push([ite._id, ite.title, Shingl(req.body.pattern.toLowerCase(), ite.data)]);
                     }
                     return result;
                 };

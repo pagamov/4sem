@@ -3,19 +3,19 @@ var ObjectID = require('mongodb').ObjectID; // for new ObjectID(id);
 module.exports = function (app, db) {
     app.post('/text', (req, res) => {
         // make new title and text in db
-        const title = req.body.t;
+        const title = req.body.title;
         // const lines = req.body.d.split('\n').map(elem => elem.split(' '));
-        const lines = req.body.d;
-        const pack = { t: title, d: lines };
+        const lines = req.body.data.toLowerCase();
+        const pack = { title: title, data: lines };
         db.collection('text').insert(pack, (err, item) => {
             if (err) {
                 res.send({ 'error': 'An error has occured' });
             } else {
-                db.collection('text').findOne( { t: title }, { '_id': 1 }, (err, item) => {
+                db.collection('text').findOne( { title: title }, { '_id': 1 }, (err, item) => {
                     if (err) {
                         res.send({ 'error': 'An error has occured' });
                     } else {
-                        res.send({ _id: item._id, t: title });
+                        res.send({ _id: item._id, title: title });
                     }
                 });
             }

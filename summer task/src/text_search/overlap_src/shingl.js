@@ -1,6 +1,6 @@
 function skolar (arr_1, arr_2) {
     var r = 0;
-    console.log(arr_2);
+    // console.log(arr_2);
     for (var [key, val] of arr_1) {
         if (arr_2.has(key)) {
             console.log(key, val, arr_2.get(key));

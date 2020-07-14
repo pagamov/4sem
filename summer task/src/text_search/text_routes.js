@@ -2,9 +2,7 @@ var ObjectID = require('mongodb').ObjectID; // for new ObjectID(id);
 
 module.exports = function (app, db) {
     app.post('/text', (req, res) => {
-        // make new title and text in db
         const title = req.body.title;
-        // const lines = req.body.d.split('\n').map(elem => elem.split(' '));
         const lines = req.body.data.toLowerCase();
         const pack = { title: title, data: lines };
         db.collection('text').insert(pack, (err, item) => {

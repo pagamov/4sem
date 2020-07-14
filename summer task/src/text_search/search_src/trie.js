@@ -81,10 +81,6 @@ module.exports = function {
     };
 
     struct Node {
-
-
-
-
         void Link_Exit() {
             Node * suff = this->suff_link;
             while (true) {

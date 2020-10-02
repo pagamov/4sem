@@ -1,0 +1,146 @@
+c:/users/admin/documents/visual studio 2013/Projects/MPTranslator/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/Admin/documents/visual studio 2013/Projects/MPTranslator/MPTranslator/bin/Debug/MPTranslator.exe
+C:/Users/Admin/documents/visual studio 2013/Projects/MPTranslator/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/Admin/documents/visual studio 2013/Projects/MPTranslator/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+C:/Users/Admin/documents/visual studio 2013/Projects/MPTranslator/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/Admin/documents/visual studio 2013/Projects/MPTranslator/MPTranslator/obj/Debug/MPTranslator.pdb
+D:/М80-204Б compilers/Третьяков А.А/Курсовая/MPTranslator/MPTranslator/bin/Debug/MPTranslator.exe.config
+D:/М80-204Б compilers/Третьяков А.А/Курсовая/MPTranslator/MPTranslator/obj/Debug/MPTranslator.exe
+D:/М80-204Б compilers/Третьяков А.А/Курсовая/MPTranslator/MPTranslator/obj/Debug/MPTranslator.pdb
+D:/М80-204Б compilers/Третьяков А.А/Курсовая/MPTranslator/MPTranslator/bin/Debug/MPTranslator.exe
+D:/М80-204Б compilers/Третьяков А.А/Курсовая/MPTranslator/MPTranslator/bin/Debug/MPTranslator.pdb
+D:/М80-204Б compilers/Третьяков А.А/Курсовая/MPTranslator/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2018/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2018/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2018/MPTranslator/obj/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2018/MPTranslator/bin/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2018/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2018/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+E:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2018/MPTranslator/bin/Debug/MPTranslator.exe.config
+E:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2018/MPTranslator/obj/Debug/MPTranslator.exe
+E:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2018/MPTranslator/obj/Debug/MPTranslator.pdb
+E:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2018/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+E:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2018/MPTranslator/bin/Debug/MPTranslator.exe
+E:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2018/MPTranslator/bin/Debug/MPTranslator.pdb
+H:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.exe.config
+H:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.exe
+H:/М80-204Б compilers/Розов Р.Д/Курсовая СП/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.pdb
+H:/М80-204Б compilers/Розов Р.Д  +++++/Курсовая СП/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.exe.config
+H:/М80-204Б compilers/Розов Р.Д  +++++/Курсовая СП/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.exe
+H:/М80-204Б compilers/Розов Р.Д  +++++/Курсовая СП/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.pdb
+H:/М80-204Б compilers/Розов Р.Д  +++++/Курсовая СП/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.exe
+H:/М80-204Б compilers/Розов Р.Д  +++++/Курсовая СП/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.pdb
+H:/М80-204Б compilers/Розов Р.Д  +++++/Курсовая СП/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+G:/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.exe.config
+G:/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.exe
+G:/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.pdb
+G:/myCompiler 2019/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+G:/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.exe
+G:/myCompiler 2019/MPTranslator/bin/Debug/MPTranslator.pdb
+G:/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe.config
+G:/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.exe
+G:/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.pdb
+G:/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe
+G:/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.pdb
+G:/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.pdb
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe.config
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.pdb
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.csprojAssemblyReference.cache
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.exe
+A:/Work/3 sem/DISKRAN/VS_lab2/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.pdb
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.exe
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.csprojAssemblyReference.cache
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/maksi/OneDrive/Desktop/myCompiler 2019_04/MPTranslator/obj/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_05/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_05/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_05/MPTranslator/obj/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_05/MPTranslator/bin/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_05/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/myCompiler 2019_05/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe.config
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.pdb
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.csprojAssemblyReference.cache
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.exe
+F:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.pdb
+E:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe.config
+E:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.exe
+E:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.pdb
+E:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe
+E:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.pdb
+E:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+G:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe.config
+G:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.exe
+G:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.pdb
+G:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe
+G:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.pdb
+G:/2019 М80-204Б compiler/Бабичева 204/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+H:/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+H:/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+H:/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.exe
+H:/myCompiler 2019_06/MPTranslator/obj/Debug/MPTranslator.pdb
+H:/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe.config
+H:/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.exe
+H:/myCompiler 2019_06/MPTranslator/bin/Debug/MPTranslator.pdb
+/Users/dmitry/myCompiler 2019_07/MPTranslator/bin/Debug/MPTranslator.exe.config
+/Users/dmitry/myCompiler 2019_07/MPTranslator/bin/Debug/MPTranslator.exe
+/Users/dmitry/myCompiler 2019_07/MPTranslator/bin/Debug/MPTranslator.pdb
+/Users/dmitry/myCompiler 2019_07/MPTranslator/obj/Debug/MPTranslator.csprojAssemblyReference.cache
+/Users/dmitry/myCompiler 2019_07/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+/Users/dmitry/myCompiler 2019_07/MPTranslator/obj/Debug/MPTranslator.exe
+/Users/dmitry/myCompiler 2019_07/MPTranslator/obj/Debug/MPTranslator.pdb
+/Users/dmitry/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+/Users/dmitry/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+/Users/dmitry/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+/Users/dmitry/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojAssemblyReference.cache
+/Users/dmitry/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+/Users/dmitry/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+/Users/dmitry/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/Дергач, Кочуйкова,/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/stud/Desktop/SemenovAS Compilers/Дергач, Кочуйкова,/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/Дергач, Кочуйкова,/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/Дергач, Кочуйкова,/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+C:/Users/stud/Desktop/SemenovAS Compilers/Дергач, Кочуйкова,/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/stud/Desktop/SemenovAS Compilers/Дергач, Кочуйкова,/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+G:/Дергач, Кочуйкова(Compiler 2019_08)/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+G:/Дергач, Кочуйкова(Compiler 2019_08)/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+G:/Дергач, Кочуйкова(Compiler 2019_08)/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb
+G:/Дергач, Кочуйкова(Compiler 2019_08)/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+G:/Дергач, Кочуйкова(Compiler 2019_08)/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+G:/Дергач, Кочуйкова(Compiler 2019_08)/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+F:/ADATA UFD/СП 2/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csproj.CoreCompileInputs.cache
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+C:/Users/alex/Desktop/nonDMP@/СП 2/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb
+D:/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+D:/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+D:/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb
+D:/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+D:/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+D:/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojResolveAssemblyReference.cache
+/Users/pavelgamov/Desktop/Coding/4_sem/SemenovAScompiler/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe.config
+/Users/pavelgamov/Desktop/Coding/4_sem/SemenovAScompiler/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.exe
+/Users/pavelgamov/Desktop/Coding/4_sem/SemenovAScompiler/myCompiler 2019_08/MPTranslator/bin/Debug/MPTranslator.pdb
+/Users/pavelgamov/Desktop/Coding/4_sem/SemenovAScompiler/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.csprojAssemblyReference.cache
+/Users/pavelgamov/Desktop/Coding/4_sem/SemenovAScompiler/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.exe
+/Users/pavelgamov/Desktop/Coding/4_sem/SemenovAScompiler/myCompiler 2019_08/MPTranslator/obj/Debug/MPTranslator.pdb

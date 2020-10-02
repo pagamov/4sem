@@ -1,0 +1,21 @@
+\section{Тест производительности}
+
+Алгоритм использует O(n) дополнительной памяти, показывает около линейную сложность.
+
+\begin{alltt}
+MacBook-Pro-Pavel:src pavelgamov make prod
+python tester.py
+g++ -std=c++11 -Wall -pedantic -O3 -o main code/main.cpp
+time : 0.07729005813 number of sides : 10000
+time : 0.05344390869 number of sides : 20000
+time : 0.08382296562 number of sides : 30000
+time : 0.12689709663 number of sides : 40000
+time : 0.12437391281 number of sides : 50000
+time : 0.15729618072 number of sides : 60000
+time : 0.17482113838 number of sides : 70000
+time : 0.20412802696 number of sides : 80000
+time : 0.22135210037 number of sides : 90000
+time : 0.25507307052 number of sides : 100000
+\end{alltt}
+
+\pagebreak

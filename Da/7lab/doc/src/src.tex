@@ -1,0 +1,151 @@
+\section{Описание}
+
+Данная задача о наполнении рюкзака обычно имеет другое условие, когда общая стоимость считается как $\sum_{i \in I} c_{i}$, а не $|I| * \sum_{i \in I} c_{i}$, из за чего появляется проблема нахождения подобного решения, но для данного условия.
+
+Обычно все решается через таблицу Вес х Номер предмета. Мы берем первый предмет, и смотрим, можем ли положить его в рюкзак весом 0, потом 1, и так до максимального веса рюкзака. Потом берем другой предмет и пытаемся положить его туда же, так как мы знаем какой предмет мы положили до этого, мы можем делать запись текущей стоимости при возможности или невозможности положить предмет в рюкзак.
+
+Пусть A(k,s) есть максимальная стоимость предметов, которые можно уложить в рюкзак вместимости s, если можно использовать только первые k предметов, то есть $ \{ n_{1},n_{2}, \dots ,n_{k} \} $, назовем этот набор допустимых предметов для A(k,s).
+
+A(k,0)=0
+
+A(0,s)=0
+
+Найдем A(k,s). Возможны 2 варианта:
+
+\quad 1. Если предмет k не попал в рюкзак. Тогда A(k,s) равно максимальной стоимости рюкзака с такой же вместимостью и набором допустимых предметов $ \{ n_{1}, n_{2}, \dots , n_{k-1} \} $, то есть A(k,s)=A(k-1,s)
+
+\quad 2. Если k попал в рюкзак. Тогда A(k,s) равно максимальной стоимости рюкзака, где вес s уменьшаем на вес k-ого предмета и набор допустимых предметов $ \{ n_{1},n_{2}, \dots ,n_{k-1} \} $ плюс стоимость k, то есть $A(k-1,s-w_{k})+p_{k}$
+
+\[
+A(k,s) = \left\{ \begin{array}{ll}
+A(k-1 {,} s) & b_{k}=0\\ 
+A(k-1 {,} s - w_{k}) + p_{k} & b_{k}=1\\
+\end{array}
+\right. \\
+\]
+  
+То есть: $A(k,s)=max(A(k-1,s),A(k-1,s-w_{k})+p_{k})$
+
+Стоимость искомого набора равна A(N,W), так как нужно найти максимальную стоимость рюкзака, где все предметы допустимы и вместимость рюкзака W.
+
+Задача расширяется для трех параметров, мы будем брать новый предмет и для каждого кол-ва и веса проверять на это условие, берем мы предмет или нет. Таким образом наша таблица или матрица превращается в матричный куб.
+
+\pagebreak
+
+\section{Исходный код}
+
+\begin{lstlisting}[language=C++]
+// main.cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    int n, m, w, c; // n - number of items; m - max mass; w - w_i; c - c_i
+    std::cin >> n >> m;
+    n++;
+    m++;
+    vector<vector<vector<int>>> matrix(n, vector<vector<int>>(n, vector<int>(m, 0)));
+    vector<int> shift(n); // for items
+    for (int k = 1; k < n; k++) { // layer of item from 1 to n
+        cin >> w >> c; //get w and c of item
+        shift[k] = w; //add item
+        for (int j = 1; j <= k; j++) { // for every variant of number to take
+            for (int c_m = 0; c_m < m; c_m++) { // for every mass in range
+                if (c_m - w >= 0) { // we can insert item
+                    if (matrix[k - 1][j - 1][c_m - w] != 0 || j - 1 == 0) {
+                        matrix[k][j][c_m] = max(matrix[k - 1][j][c_m], matrix[k - 1][j - 1][c_m - w] + c);
+                    } else {
+                        matrix[k][j][c_m] = matrix[k - 1][j][c_m];
+                    }
+                } else { // we cannot insert item
+                    matrix[k][j][c_m] = matrix[k - 1][j][c_m];
+                }
+            }
+        }
+    }
+
+    int k = n - 1, c_c = 0, c_m = m - 1; // k - item level; c_c = curent count; c_m - curent mass
+    int max_value = 0; // max item value based on count
+    for (int count = 0; count < n; count++) {
+        if (matrix[k][count][c_m] * count > max_value) {
+            max_value = matrix[k][count][c_m] * count;
+            c_c = count;
+        }
+    }
+    cout << max_value << "\n";
+
+    vector<int> res;
+    while (c_c > 0) {
+        if (matrix[k][c_c][c_m] != matrix[k - 1][c_c][c_m]) {
+            c_c--;
+            c_m -= shift[k];
+            res.push_back(k);
+        }
+        k--;
+    }
+
+    for (int r = res.size() - 1; r >= 0; r--) {
+        cout << res[r] << ' ';
+    }
+    cout << '\n';
+    return 0;
+}
+\end{lstlisting}
+
+\lstset{language=[gnu] make}
+\lstset{
+   language=[gnu] make,
+   keywordstyle=\color{teal}\textbf,
+   stringstyle=\color{blue},
+   identifierstyle=\itshape
+}
+
+\begin{lstlisting}
+CCFLAGS = -std=c++11 -Wall -pedantic -O3 -Werror -Wno-sign-compare -Wno-long-long
+###____###
+solution : main.cpp ; $(CC) $(CCFLAGS) main.cpp -o solution
+clean	 : ;
+###___###
+\end{lstlisting}
+
+\pagebreak
+
+\section{Консоль}
+
+\begin{alltt}
+pagamov@pagamov-VirtualBox:~/Desktop/Da/7lab/src valgrind ./main 
+==3407== Memcheck, a memory error detector
+==3407== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3407== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==3407== Command: ./main
+==3407== 
+5 20
+4 5
+2 4
+6 1
+2 3
+5 1
+70
+1 2 3 4 5 
+==3407== 
+==3407== HEAP SUMMARY:
+==3407==   total heap usage: 63 allocs, 63 frees, 200,432 bytes allocated
+==3407== 
+==3407== LEAK SUMMARY:
+==3407==    definitely lost: 0 bytes in 0 blocks
+==3407==    indirectly lost: 0 bytes in 0 blocks
+==3407==      possibly lost: 0 bytes in 0 blocks
+==3407==    still reachable: 0 bytes in 0 blocks
+==3407==         suppressed: 0 bytes in 0 blocks
+==3407== Rerun with --leak-check=full to see details of leaked memory
+==3407== 
+==3407== For counts of detected and suppressed errors, rerun with: -v
+==3407== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+pagamov@pagamov-VirtualBox:~/Desktop/Da/7lab/src
+\end{alltt}
+
+\pagebreak

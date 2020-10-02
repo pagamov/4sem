@@ -1,0 +1,8 @@
+main
+solution
+*.tar
+*.txt
+*.out
+*.test
+src/test
+*.dSYM

@@ -1,0 +1,437 @@
+\section{Описание}
+
+Алгоритм Укконена за линию достигается последовательными дополнениями и улучшениями наивного алгоритма построения суффиксного дерева за куб.
+
+Сперва поговорим о правилах расширения или дополнения:
+
+\quad 1. Если конец данного суффикса заканчивается в листе, продлить данный лист этим символом.
+
+\quad 2. Если пусть $S[j..i]$ заканчивается не в листе и нет продолжения, создается новый потомок лист, если же данный суффикс заканчивается не в конце, а в середине данного, создается внутренняя вершина, также как и новый лист, который является разницей между одинаковой частью и разной.
+
+\quad 3. Если суффикс $S[j..i]$ заканчивается не в листе, допустим сейчас мы в символе $S[i]$ а символ $S[i+1]$ уже присутствует, ничего делать не нужно
+
+Введем понятие \textbf{суффиксной ссылки}: если суффикс помеченый $x A$ заканчивается в данной вершине, где $x$ - какой то символ, а $A$ строка, возможно пустая, суффиксная ссылка указывается на вершину, в которой заканчивается суффикс А на еденицу меньший по длинне. Они пригодятся нам для быстрого перехода по вершинам при добавлении, вместо того чтобы идти от корня в поиске очередного суффикса.
+
+\textbf{Skip/Count trick} - чтобы не сравнивать всю строчку с уже имеющейся в дереве при спуске, можно делать проще, зная длину подстроки Y например, проверять, если полная длинна больше чем длина имеющейся в вершине подстроки, можно сразу пропускать всю это подстроку, так как при поиске мы будем двигаться от добавления наибольшего суффикса к наименьшему, это поможет нам пробегать вниз после перехода по суффиксной ссылке, делая данный пробег не за колличество символов в подстроке, а за кол-во промежуточных вершин в пути, что почти константно.
+
+Что порождает \underline{трюк 1}: Если путь больше длины ребра, перескочи дальше.
+
+Еще один важный пункт, \textbf{Edge-label compression} - позволяет хранить в вершинах не копии подстрок, а всего лишь указатели на итераторы строки, или же начало и конец подстроки в вершине, где начало и конец указывают с какой буквы входной строчки и по какую вершина хранит подстроку.
+
+\textbf{Наблюдение 1}: Правило 3 - остановка процесса.
+
+Если в итерации мы встретили правило 3, следовательно прододлжатб дальнейшую вставку текущего символа бессымлено, так как все дальнейшие суффиксы уже хранят данный суффикс.
+
+Отсюда \underline{трюк 2}: остановка процесса, сразу как происходит правило 3.
+
+\textbf{Наблюдение 2}: Однажды лист, всегда лист.
+
+Таким образом, проще всего при создании листа, сразу продлить его до конца строки, так как алгоритм не содерджит в себе каких то модификаций листов.
+
+Отсюда \underline{Трюк 3}: Создание глобальной переменной для концов листа.
+
+Если раньше наши листы выглядили так: $(a,q)$, $(v,b)$, $(y,m)$, то теперь так, $(a,E)$, $(v,E)$, $(y,E)$, где $Е$ это указатель на глобальную переменную, которая увеличивается на 1 каждую итерацию, продлевая за $О(1)$, все листы.
+
+Таким образом сейчас алгоритм выглядит так:
+
+По правилу 1 продлеваем за константу все листы, дальше по правилу 2 добавляем все суффиксы которые можем, если встречаем правило 3, сразу выходим и начинаем добавлять новый элемент.
+
+Введем понятие $activeNode$, $activeEdge$, $activeLength$, что образует собой в тройке $activePoint$.
+
+\textbf{activePoint}: Это может быть корень, любая внутренняя вершина или любая точка внутри вершины. Это указатель, который показывает, откуда алгоритм начнет свой путь при начале каждой итерации. Для начала activePoint установлен на корень. Все другие итерации будут ставить activePoint на правильное место основываясь на предыдущей итерации (исключение APCFALZ о чем поговорим ниже) и обязанность текущей итерации менять activePoint в конце каждой итерации для использования в дальнейшем, где правило 2 или 3 будут применяться (в текущей или следующей фазе).
+
+Следовательно нам надо понять как хранить activePoint. Мы храним их как три переменные: activeNode, activeEdge, activeLength.
+
+\textbf{activeNode}: Указатель на вершину, которой может быть корень или любая внутренняя вершина.
+
+\textbf{activeEdge}: Когда мы находимся в какой то вершине, мы должны знать по какой букве нам надо идти вниз, если идти все таки приходится. activeEdge будет хранить эту информацию. Пример, activeNode это вершина с которой мы начинаем путь, в то время как activeEdge будет поставлен на следующий добавляющийся символ.
+
+\textbf{activeLength}: Показывает сколько букв нам надо пройти вниз (по пути который говорит нам activeEdge) из activeNode чтобы достигнуть activePoint откуда алгоритм начнет путь. Как пример, если  activeNode это откуда мы начнем путь, то activeLength будет равна нулю.
+
+После фазы i, если у нас j листовых вершин тогда в фазе i+1, первые j расширений будут сделаны за константу с помощью трюка 3. activePoint нужна для расширений с  j+1 по i+1 и activePoint может быть изменена (или не изменена) на основании продыдущих действий или этапов.
+
+\textbf{activePoint change for extension rule 3 (APCFER3):}
+
+Когда применяется правило 3 в любой фазе i, прежде чем пойти в фазу i+1, увеличиваем activeLength by 1. Никаких изменений activeNode и activeEdge. Почему? Потому что после правила 3, текущий символ из строки S совпадает с путем в текущем activePoint, тоесть для будущего расширения activePoint, activeNode and activeEdge остаются теми же, только activeLenth увеличивается на 1 (потому что символ совпал). Данный activePoint (тот же node, тот же edge и увеличенная length) будут использованы в фазе i+1.
+
+\textbf{activePoint change for walk down (APCFWD):}
+
+activePoint изменится на основании применимого правила расширения. activePoint также может меняться когда мы спускаемся по ребрам. Представим activePoint как (A, s, 11) Если длина текущей activeNode меньше чем activeLenght, тогда идем по activeEdge до тех пор пока не упремся в внутреннюю вершину где длина вершины будет меньше нашей activeLenght, важно заметить, пока спускаемся, вычитаем из activeLenght длину вершины, а также меняем activeEdge на следующий на длину вершины. Нам надо как можно более сократить поиск начала отсчета для будущией итерации. Что делать если мы не встретили никакой внутренней вершины по пути, следовательно, мы остаемся на месте, делать нам больше ничего не нужно.
+
+\textbf{activePoint change for Active Length ZERO (APCFALZ):}
+
+Если activeLength равна нулю, то пускай следующая буква, которую мы читаем это X, мы меняем наш activeEdge на данный символ, и никуда не идем, так как activeLength равна нулю и спускаться никуда не надо.
+
+В коде мы будем пробегаться по символам строки, добавляя новые суффиксы один за другим. Каждый цикл, пока число оставшихся суффиксов больше 0, для фазы i мы будем добавлять суффиксы с буквой i. Мы будем добавляться не не все суффиксы (первые несклько добавит трюк 3, расширяя наши листы, а также правило 3, которое обрывает наш цикл, также что касается того если кол-во оставшихся к добавлению суффиксов не равно нулю к концу итерации, значит это то, что мы добавили данные суффиксы неявно, что называется неявным суффиксным деревом, а еще то, что мы добавим их явно в следующих итерациях).
+
+\pagebreak
+
+\section{Исходный код}
+
+Далее представлен код программы в соответствии с разбиением по файлам для удобства навигации.
+
+\begin{lstlisting}[language=C++]
+// main.cpp
+#include <iostream>
+#include <string>
+#include "Uccon.hpp"
+
+using namespace std;
+
+int main() {
+    string str1, str2;
+    while(cin >> str1 >> str2) {
+        str1 += "#";
+        str2 += "$";
+        str1 += str2;
+        Uccon tree(str1, str2);
+    }
+    return 0;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+// uccon.hpp
+#ifndef UCCON_HPP
+#define UCCON_HPP
+
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <list>
+#include "Vertex.hpp"
+
+using namespace std;
+
+class Uccon {
+public:
+    string pattern;
+    string str_2;
+    Vertex * root, * activeNode, * link;
+    // int numStr;
+    int remaining, activeLen;
+    string::iterator activeEdge;
+
+    int num_max_substring;
+    vector <LCS> answer;
+    LCS ans; // prev version (with only one substring)
+
+    Uccon(string patt_1, string patt_2);
+    void Add(string::iterator symbol);
+    void Sufflink(Vertex *node);
+    int Markup(Vertex * node);
+    void FindNumMax(Vertex * node, int walk);
+    void FindLongestSubstrings(Vertex * node, int walk, Vertex * begin, vector <Vertex *> path_to_sub);
+
+    // void Destroy(Vertex * node);
+    ~Uccon();
+};
+
+Uccon::Uccon(string patt_1, string patt_2) : remaining(0), activeLen(0), num_max_substring(0) {
+    this->pattern = patt_1;
+    this->str_2 = patt_2;
+    this->activeEdge = pattern.begin();
+    this->root = new Vertex(pattern.end(), pattern.end());
+    this->root->suff_link = this->root;
+    this->activeNode = this->root;
+    this->link = this->root;
+    ans.length = 0;
+    ans.begining = nullptr;
+    ans.ending = nullptr;
+
+    for (string::iterator symbol = pattern.begin(); symbol != pattern.end(); symbol++) {
+        Add(symbol); // adding new sumbol
+    }
+
+    Markup(root);
+
+    FindNumMax(root, 0);
+    vector <Vertex *> path_to_sub;
+    FindLongestSubstrings(root, 0, root, path_to_sub);
+    list <string> answer_string;
+
+    int size_answer = answer.size();
+    for (int i = 0; i < size_answer; i++) {
+        string a_string;
+        int size_answer_path_to_subs = answer[i].path_to_subs.size();
+        for(int j = 0; j < size_answer_path_to_subs; j++) {
+            string next_string(answer[i].path_to_subs[j]->begin, answer[i].path_to_subs[j]->end + 1);
+            a_string += next_string;
+        }
+        answer_string.push_back(a_string);
+    }
+
+    answer_string.sort();
+    cout << num_max_substring << "\n";
+    for (list<string>::iterator i = answer_string.begin(); i != answer_string.end(); i++) {
+        cout << *i << "\n";
+    }
+}
+
+void Uccon::FindNumMax(Vertex * node, int walk) {
+    if (node->number_string.size() == 2) {
+        if (node != root) {
+            walk += distance(node->begin, node->end) + 1;
+            if (walk > num_max_substring) {
+                num_max_substring = walk;
+            }
+        }
+        for (map<char, Vertex *>::iterator n = node->child.begin(); n != node->child.end(); n++) {
+            Vertex * next_child = n->second;
+            FindNumMax(next_child, walk);
+        }
+    }
+}
+
+void Uccon::FindLongestSubstrings(Vertex *node, int walk, Vertex *begin, vector <Vertex *> path_to_sub) {
+    if (node->number_string.size() == 2) {
+        if (node != root) {
+            if(walk == 0) {
+                path_to_sub.clear();
+            }
+            path_to_sub.push_back(node);
+            walk += distance(node->begin, node->end) + 1;
+            if (walk == num_max_substring) {
+                ans.path_to_subs = path_to_sub;
+                ans.length = walk;
+                answer.push_back(ans);
+                path_to_sub.clear();
+            }
+        }
+        for (map<char, Vertex *>::iterator n = node->child.begin(); n != node->child.end(); n++) {
+            Vertex *next_child = n->second;
+            FindLongestSubstrings(next_child, walk, begin, path_to_sub);
+        }
+    }
+}
+
+int Uccon::Markup(Vertex * node) {
+    if(node->begin != pattern.end()) {
+        if(*node->begin == '#')
+            node->number_string.insert(1);
+        else if(*node->begin == '$')
+            node->number_string.insert(2);
+    }
+
+    if(distance(node->begin, node->end) > 0) {
+        int size_str = str_2.size();
+        if (distance(node->begin, node->end) > size_str) {
+            node->number_string.insert(1);
+        } else if (node->end == pattern.end()) {
+            node->number_string.insert(2);
+        }
+    }
+
+    for (map<char, Vertex *>::iterator it2 = node->child.begin(); it2 != node->child.end(); it2++) {
+        Vertex *next_child = it2->second;
+        int ans = Markup(next_child);
+        if (node->number_string.size() < 2) {
+            if (ans == 3) {
+                node->number_string.insert(1);
+                node->number_string.insert(2);
+            }
+            if (ans == 1) {
+                node->number_string.insert(1);
+            }
+            if (ans == 2) {
+                node->number_string.insert(2);
+            }
+        }
+    }
+
+    if (node->number_string.size() == 2) {
+        return 3;
+    }
+    if (node->number_string.size() == 1) {
+        if(*node->number_string.begin() == 1) {
+            return 1;
+        }
+        if(*node->number_string.begin() == 2) {
+            return 2;
+        }
+    }
+    return 0;
+}
+
+void Uccon::Add(string::iterator symbol) {
+    link = root;
+    remaining++;
+
+    while (remaining) {
+
+        if (!activeLen) {
+            activeEdge = symbol;
+        }
+
+        map <char, Vertex *>::iterator it1 = activeNode->child.find(* activeEdge);
+
+        if (it1 == activeNode->child.end()) { // dont find edge
+            Vertex * n_node = new Vertex(symbol, pattern.end()); // new leaf
+            activeNode->child[*activeEdge] = n_node;
+            Sufflink(activeNode);
+        } else { // find edge
+            Vertex * after = it1->second;
+            // Jump
+            int length = after->end - after->begin + 1;
+
+            if (activeLen >= length) {
+                activeEdge += length;
+                activeLen -= length;
+                activeNode = after;
+                continue;
+            }
+
+            // Rule 3 extention
+            if (*(after->begin + activeLen) == *symbol) {
+                activeLen++;
+                Sufflink(activeNode);
+                //show stopper
+                break;
+            }
+
+            // Rule 2 extention
+            Vertex * split = new Vertex(after->begin, after->begin + activeLen - 1);
+            Vertex * leaf = new Vertex(symbol, pattern.end());
+            activeNode->child[* activeEdge] = split;
+            split->child[* symbol] = leaf;
+            after->begin += activeLen;
+            split->child[* after->begin] = after;
+            Sufflink(split);
+        }
+
+        remaining--;
+
+        if (activeNode == root && activeLen != 0){
+            activeLen--;
+            activeEdge++;
+        } else {
+            if (activeNode->suff_link) {
+                activeNode = activeNode->suff_link;
+            } else {
+                activeNode = root;
+            }
+        }
+
+    }
+}
+
+void Uccon::Sufflink(Vertex * node) {
+    if (link != root)
+        link->suff_link = node;
+    link = node;
+}
+
+Uccon::~Uccon() {
+    delete root;
+}
+
+#endif
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+// vertex.hpp
+#ifndef VERTEX_HPP
+#define VERTEX_HPP
+
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+class Vertex {
+public:
+    map <char, Vertex *> child;
+    string::iterator begin, end;
+    Vertex * suff_link;
+    set <int> number_string;
+    Vertex(string::iterator begin, string::iterator end) : begin(begin), end(end), suff_link(nullptr) {};
+    ~Vertex();
+};
+
+Vertex::~Vertex() {
+    for (pair <char, Vertex *> node : child) {
+        delete node.second;
+    }
+}
+
+struct LCS { // longest common substring
+    int length;
+    vector <Vertex *> path_to_subs;
+    Vertex * begining;
+    Vertex * ending;
+};
+
+#endif
+\end{lstlisting}
+
+Также представлен makefile для компиляции всего проекта.
+
+\lstset{language=[gnu] make}
+\lstset{
+   language=[gnu] make,
+   keywordstyle=\color{teal}\textbf,
+   stringstyle=\color{blue},
+   identifierstyle=\itshape
+}
+
+\begin{lstlisting}
+CC = g++
+CCFLAGS = -std=c++11 -Wall -pedantic -g
+###____###
+main 		: code2/main.cpp code2/*.hpp ; $(CC) $(CCFLAGS) -o main code2/main.cpp
+clean		: ; rm main
+tar 		: ; mkdir solution ; cp code2/*.hpp code2/*.cpp code2/makefile solution ; tar -cf solution.tar solution
+tard		: solution/ solution.tar ; rm -r solution solution.tar
+test		: ; python tester.py
+cleant		: ; rm test/*.test
+check		: ; python checker.py
+valgrind 	: ; valgrind ./main < test/test.test > test/res.test
+# -s --leak-check=full --track-origins=yes
+callgrind 	: ; valgrind --tool=callgrind ./main < test/test.test > test/res.test
+cache 		: ; kcachegrind
+sol 		: ; $(CC) $(CCFLAGS) -o sol solution.cpp
+prod : ; python production.py
+###___###
+\end{lstlisting}
+
+\pagebreak
+
+\section{Консоль}
+
+\begin{alltt}
+pagamov@pagamov-VirtualBox:~/Desktop/Da/5lab/src make
+g++ -std=c++11 -Wall -pedantic -g -o main code2/main.cpp
+pagamov@pagamov-VirtualBox:~/Desktop/Da/5lab/src python tester.py 
+5000
+5000
+pagamov@pagamov-VirtualBox:~/Desktop/Da/5lab/src ./main < test/test.test 
+5
+dvqbh
+mspax
+pagamov@pagamov-VirtualBox:~/Desktop/Da/5lab/src valgrind ./main < test/test.test 
+==3080== Memcheck, a memory error detector
+==3080== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3080== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==3080== Command: ./main
+==3080== 
+5
+dvqbh
+mspax
+==3080== 
+==3080== HEAP SUMMARY:
+==3080==     in use at exit: 0 bytes in 0 blocks
+==3080==   total heap usage: 52,534 allocs, 52,534 frees, 3,101,849 bytes allocated
+==3080== 
+==3080== All heap blocks were freed -- no leaks are possible
+==3080== 
+==3080== For counts of detected and suppressed errors, rerun with: -v
+==3080== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+pagamov@pagamov-VirtualBox:~/Desktop/Da/5lab/src
+\end{alltt}
+
+\pagebreak

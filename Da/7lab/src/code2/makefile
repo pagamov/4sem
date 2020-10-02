@@ -1,0 +1,5 @@
+CC = g++
+CCFLAGS = -std=c++14 -Wall -pedantic -O3 -Werror -Wno-sign-compare -Wno-long-long
+###____###
+solution : main.cpp ; $(CC) $(CCFLAGS) main.cpp -o solution
+clean	 : ;

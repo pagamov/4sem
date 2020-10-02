@@ -1,0 +1,133 @@
+\section{Описание}
+
+Длинная арифметика — это набор программных средств (структуры данных и алгоритмы), которые позволяют работать с числами гораздо больших величин, чем это позволяют стандартные типы данных.
+
+Основная идея заключается в том, что число хранится в виде массива его цифр.
+Цифры могут использоваться из той или иной системы счисления, в данной ЛР применяются десятичная система счисления и её степени: десять тысяч, миллиард.
+
+Операции над числами в этом виде длинной арифметики производятся с помощью "школьных" алгоритмов сложения, вычитания, умножения, деления столбиком. В данной описана работа только с неотрицательными длинными числами.
+
+Также существуют более сложные алгоритмы, которые достигают меньших сложностей, одно из таких - алгоритм быстрого умножения длинных чисел Карацубы, также есть быстрое преобразование фурье, для дальнейшего умножения двух чисел, которые представимы не в виде длинного числа, а набора коифециентов перед членами многочлена, для которого и применяется алгоритм быстрого преобразования Фурье. Для возведения в целую степень был использован алгоритм логарифмического возведения в степень. Он заполняет массив числами от 1-ой степень до $2^{n} \leq d$, где d - нужная нам степень числа. А потом пробегаемся обратно заполняя недостающие значения умножая на уже полученные значения числа в n-ой степени из массива.
+
+\pagebreak
+
+\section{Исходный код}
+
+\begin{lstlisting}[language=C++]
+// main.cpp
+#include <iostream>
+#include <string>
+#include <map>
+#include "bigint.hpp"
+
+using namespace std;
+
+enum {
+    ADD,SUB,MULT,POW,DEL,
+    GT,IT,EQ
+};
+
+map <string, int> arr { {"+", ADD}, {"-", SUB}, {"*", MULT}, {"^", POW}, {"/", DEL}, {">", GT}, {"<", IT}, {"=", EQ} };
+
+int main () {
+    BigInt A, B;
+    string oper;
+    while (cin >> A >> B >> oper) {
+
+        switch (arr[oper]) {
+            case ADD:
+                try {
+                    cout << A + B << "\n";
+                } catch (...) {
+                    cout << "Error\n";
+                }
+                break;
+            case SUB:
+                try {
+                    cout << A - B << "\n";
+                } catch (...) {
+                    cout << "Error\n";
+                }
+                break;
+            case MULT:
+                try {
+                    cout << A * B << "\n";
+                } catch (...) {
+                    cout << "Error\n";
+                }
+                break;
+            case POW:
+                try {
+                    cout << (A ^ B) << "\n";
+                } catch (...) {
+                    cout << "Error\n";
+                }
+                break;
+            case DEL:
+                try {
+                    cout << A / B << "\n";
+                } catch (...) {
+                    cout << "Error\n";
+                }
+                break;
+            case GT:
+                A > B ? cout << "true\n" : cout << "false\n";
+                break;
+            case IT:
+                A < B ? cout << "true\n" : cout << "false\n";
+                break;
+            case EQ:
+                A == B ? cout << "true\n" : cout << "false\n";
+                break;
+        }
+
+    }
+    return 0;
+}
+\end{lstlisting}
+
+\lstset{language=[gnu] make}
+\lstset{
+   language=[gnu] make,
+   keywordstyle=\color{teal}\textbf,
+   stringstyle=\color{blue},
+   identifierstyle=\itshape
+}
+
+\begin{lstlisting}
+CC = g++
+CCFLAGS = -std=c++14 -Wall -pedantic -O3
+###____###
+solution : main.cpp *.hpp ; $(CC) $(CCFLAGS) main.cpp -o solution
+clean	 : ;
+\end{lstlisting}
+
+\pagebreak
+
+\section{Консоль}
+
+\begin{alltt}
+MacBook-Pro-Pavel:src pavelgamov make
+g++ -std=c++14 -Wall -pedantic -Werror -Wno-sign-compare -Wno-long-long -o main code/main.cpp
+
+root@pavel:/media/sf_Coding/4sem/Da/6lab/src# valgrind ./main < test/test.test 
+==1930== Memcheck, a memory error detector
+==1930== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1930== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==1930== Command: ./main
+==1930== 
+18720000
+==1930== 
+==1930== HEAP SUMMARY:
+==1930==     in use at exit: 0 bytes in 0 blocks
+==1930==   total heap usage: 17 allocs, 17 frees, 82,524 bytes allocated
+==1930== 
+==1930== All heap blocks were freed -- no leaks are possible
+==1930== 
+==1930== For lists of detected and suppressed errors, rerun with: -s
+==1930== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+root@pavel:/media/sf_Coding/4sem/Da/6lab/src# 
+
+\end{alltt}
+
+\pagebreak

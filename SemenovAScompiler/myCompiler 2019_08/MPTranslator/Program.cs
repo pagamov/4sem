@@ -7,28 +7,28 @@ using System.Text;
 
 namespace MPTranslator
 {
-    
+
     class Program
     {
 
         static void Dialog()
         {
             Console.WriteLine("\n----------------------------------------------");
-            Console.WriteLine("DKA ( lab 2 ) ........................ Enter 1");
+            Console.WriteLine("DKA ( lab 2 ) \t\t\t\t\t Enter 1");
             Console.WriteLine("Covert NDKA to DKA ");
-            Console.WriteLine("example ....................... Enter 2.1");
-            Console.WriteLine("lab 3   ....................... Enter 2");
-            Console.WriteLine("Grammar ( lab 4 - 6 )  ............... Enter 3");
-            Console.WriteLine("MP - auto ( lab 7,8 )  ............... Enter 4");
-            Console.WriteLine("MPs...................Enter 4.1");
-            Console.WriteLine("LL - analizator ( lab 9 - 11 )  ...... Enter 5");
-            Console.WriteLine("LL - analizator (debug-mode) ( lab 9 - 11 )  ...... Enter 5.1");
+            Console.WriteLine("example \t\t\t\t\t Enter 2.1");
+            Console.WriteLine("lab 3 \t\t\t\t\t\t Enter 2");
+            Console.WriteLine("Grammar ( lab 4 - 6 ) \t\t\t\t Enter 3");
+            Console.WriteLine("MP - auto ( lab 7,8 ) \t\t\t\t Enter 4");
+            Console.WriteLine("MPs \t\t\t\t\t\t Enter 4.1");
+            Console.WriteLine("LL - analizator ( lab 9 - 11 ) \t\t\t Enter 5");
+            Console.WriteLine("LL - analizator (debug-mode) ( lab 9 - 11 ) \t Enter 5.1");
             Console.WriteLine("LR - analizator");
-            Console.WriteLine("lab 12 - 16   ................. Enter 6");
-            Console.WriteLine("example ....................... Enter 6.1");
-            Console.WriteLine("MP_Automate with delta rules   ................. Enter 7");
-            Console.WriteLine("MP_Translator   ................. Enter 8");
-            Console.WriteLine("MP_Transl_Translator   ................. Enter 9");
+            Console.WriteLine("lab 12 - 16 \t\t\t\t\t Enter 6");
+            Console.WriteLine("example \t\t\t\t\t Enter 6.1");
+            Console.WriteLine("MP_Automate with delta rules \t\t\t Enter 7");
+            Console.WriteLine("MP_Translator \t\t\t\t\t Enter 8");
+            Console.WriteLine("MP_Transl_Translator \t\t\t\t Enter 9");
         }
 
         struct Tablekey
@@ -49,7 +49,7 @@ namespace MPTranslator
             RemoveEpsilonRules();
             Console.WriteLine("\nПосле удаления е-продукций");
 
-            Grammar.Add("П S");     //дополнить грамматику правилом П -> S       
+            Grammar.Add("П S");     //дополнить грамматику правилом П -> S
             NonTerminals += "П";
             Terminals += "$";
 
@@ -160,7 +160,7 @@ namespace MPTranslator
                     }
                     Console.WriteLine("Строка допущена"); //Console.ReadLine();
                 }
-                catch (Exception) { Console.WriteLine("Строка отвергнута"); } //Console.ReadLine(); 
+                catch (Exception) { Console.WriteLine("Строка отвергнута"); } //Console.ReadLine();
                 Console.ReadLine();
                 Console.WriteLine("\n Продолжить? (y or n) \n");
                 answer = Console.ReadLine();
@@ -174,7 +174,7 @@ namespace MPTranslator
             NonTerminals = "";
             Grammar.Clear();
             string s;
-            Hashtable term = new Hashtable();       //  временная таблица терминалов 
+            Hashtable term = new Hashtable();       //  временная таблица терминалов
             Hashtable nonterm = new Hashtable();    //  и нетерминалов
             Console.WriteLine("\nВведите продукции: \n ");
             while ((s = Console.In.ReadLine()) != "")
@@ -242,7 +242,7 @@ namespace MPTranslator
             for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
             {
                 string current = (string)rule.Current;  //  текущее правило,
-                string rhs = current.Substring(2);  //  его правая часть,                       
+                string rhs = current.Substring(2);  //  его правая часть,
                 string[] rhs_split = rhs.Split(A);  //  отдельные сегменты rhs, разделенные А
                 int counter;
                 if (rhs.IndexOf(A) != -1)
@@ -259,9 +259,9 @@ namespace MPTranslator
                             //  если текущая комбинация содержит хоть один вычеркиваемый символ (т.е. единицу)
                             string combination = (string)element.Current;
                             string this_rhs = rhs_split[0];
-                            //  если текущий символ комвинации - единица, 
+                            //  если текущий символ комвинации - единица,
                             //  то вычеркиваем А(просто соединяем сегменты правой части правила),
-                            //  иначе вставляем дополнительный символ А) 
+                            //  иначе вставляем дополнительный символ А)
                             //
                             for (int i = 0; i < combination.Length; i++)
                                 this_rhs += (combination[i] == '0' ? A.ToString() : "") + rhs_split[i + 1];
@@ -282,12 +282,12 @@ namespace MPTranslator
                 EpsilonRulesExist = false;
                 for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
                     if (((string)rule.Current)[2] == 'e')
-                    {    // нашли эпсилон-правило     
+                    {    // нашли эпсилон-правило
                         // принимаем пустую строку, если левая часть правила содержит стартовый символ
                         char A = ((string)rule.Current)[0];
                         if (A == 'S') { AcceptEmptyString = true; }
                         Grammar.AddRange(GenerateRulesWithout(A));
-                        Grammar.Remove(rule.Current);       // удаляем e-правило                        
+                        Grammar.Remove(rule.Current);       // удаляем e-правило
                         EpsilonRulesExist = true;
                         break;
                     }
@@ -360,7 +360,7 @@ namespace MPTranslator
                     for (IEnumerator rule = Grammar.GetEnumerator(); rule.MoveNext(); )
                         if (((string)rule.Current)[0] == B)
                         { //  B - >gramma
-                            string gamma = ((string)rule.Current).Substring(2);     //  gamma     
+                            string gamma = ((string)rule.Current).Substring(2);     //  gamma
                             string first_betaa = First(beta + a);
                             // для каждого b из FIRST(betaa)
                             for (int i = 0; i < first_betaa.Length; i++)
@@ -423,7 +423,7 @@ namespace MPTranslator
             return true;
         }
 
-        // Функция SetsEqual() используется функцией Contatains, 
+        // Функция SetsEqual() используется функцией Contatains,
         // определяющей, является ли множество g элементом списка С
         static bool Contains(ArrayList C, ArrayList g)
         {
@@ -519,7 +519,7 @@ namespace MPTranslator
                         a = itvalue[itvalue.Length - 1];  // определить значение a
                         string alpha = itvalue.Split('.')[0].Substring(2);  // и alpha                      5!
                         if (itvalue[0] != 'П')
-                        {                    // если левая часть не равна П                        
+                        {                    // если левая часть не равна П
                             // ACTION[i, a] = reduce A -> alpha
                             if (WriteActionTableValue(ACTION, i, a, "r " + itvalue[0] + " " + alpha) == false)
                                 return null;                    // грамматика не LR(1)
@@ -556,7 +556,7 @@ namespace MPTranslator
         }
 
         static string[,] Mtable(myGrammar G)
-        { // построение заданной таблицы      
+        { // построение заданной таблицы
             string[,] t = new string[G.T.Count + G.V.Count + 2, G.T.Count + 1];
             t[0, 3] = "(F+L),1";
             t[1, 3] = "(L*),2";
@@ -919,7 +919,7 @@ namespace MPTranslator
                                     Console.WriteLine("\nВведите строку :");
                                     Console.WriteLine(mpA1.Execute(Console.ReadLine()).ToString());
                                     break;
-                                
+
                                 case "2":
                                     myMp mpA2 = new myMp(new ArrayList() { "q0", "q1", "q2", "qf" },
                                                          new ArrayList() { "i", "=", "" },
@@ -963,7 +963,7 @@ namespace MPTranslator
                                     Console.WriteLine("\nВведите строку :");
                                     Console.WriteLine(translator.Execute(Console.ReadLine()).ToString());
                                     //Console.WriteLine(translator.Execute("i+i").ToString());
-            
+
                                     break;
 
                             } //end switch 1 or 2
@@ -1000,27 +1000,58 @@ namespace MPTranslator
                         break;
 
                     case "5.1": // LL Разбор
-                        myGrammar exemple1 = new myGrammar(new ArrayList() { "i", "(", ")", ":", "*", "" },
-                                                           new ArrayList() { "S", "F", "L" },
+                        // myGrammar exemple1 = new myGrammar(new ArrayList() { "i", "(", ")", ":", "*", "" },
+                        //                                    new ArrayList() { "S", "F", "L" },
+                        //                                    "S");
+                        //
+                        // exemple1.AddRule("S", new ArrayList() { "(", "F", ":", "L", ")" });
+                        // exemple1.AddRule("S", new ArrayList() { "L", "*" });
+                        // exemple1.AddRule("S", new ArrayList() { "i" });
+                        // exemple1.AddRule("L", new ArrayList() { "L", "*" });
+                        // exemple1.AddRule("L", new ArrayList() { "i" });
+                        // exemple1.AddRule("F", new ArrayList() { "L", "*" });
+                        // exemple1.AddRule("F", new ArrayList() { "i" });
+
+
+                        myGrammar exemple1 = new myGrammar(new ArrayList() { "0", "1", "" },
+                                                           new ArrayList() { "S", "A" },
                                                            "S");
-                        
-                        exemple1.AddRule("S", new ArrayList() { "(", "F", ":", "L", ")" });
-                        exemple1.AddRule("S", new ArrayList() { "L", "*" });
-                        exemple1.AddRule("S", new ArrayList() { "i" });
-                        exemple1.AddRule("L", new ArrayList() { "L", "*" });
-                        exemple1.AddRule("L", new ArrayList() { "i" });
-                        exemple1.AddRule("F", new ArrayList() { "L", "*" });
-                        exemple1.AddRule("F", new ArrayList() { "i" });
+
+                        exemple1.AddRule("S", new ArrayList() { "0", "A", "S" });
+                        exemple1.AddRule("A", new ArrayList() { "0", "S", "A" });
+
+                        exemple1.AddRule("S", new ArrayList() { "1" });
+                        exemple1.AddRule("A", new ArrayList() { "1" });
 
                         LLParser parser1 = new LLParser(exemple1);
-                        Console.WriteLine("Введите строку: ");
-                        if (parser1.Parse1(Console.ReadLine()))
-                        {
+                        Console.WriteLine("Введите первую строку: ");
+                        // if (parser1.Parse1(Console.ReadLine())) {
+                        if (parser1.Parse1("00111")) {
                             Console.WriteLine("Успех. Строка соответствует грамматике.");
                             Console.WriteLine(parser1.OutputConfigure);
+                        } else {
+                            Console.WriteLine("Не успех. Строка не соответствует грамматике.");
                         }
-                        else
-                        {
+
+
+
+                        myGrammar exemple2 = new myGrammar(new ArrayList() { "a", "b", "" },
+                                                           new ArrayList() { "S", "A" },
+                                                           "S");
+
+                        exemple2.AddRule("S", new ArrayList() { "S", "A", "a" });
+                        exemple2.AddRule("A", new ArrayList() { "A", "S", "a" });
+
+                        exemple2.AddRule("S", new ArrayList() { "b" });
+                        exemple2.AddRule("A", new ArrayList() { "b" });
+
+                        LLParser parser2 = new LLParser(exemple2);
+                        Console.WriteLine("Введите вторую строку: ");
+                        // if (parser2.Parse1(Console.ReadLine())) {
+                        if (parser2.Parse1("bba")) {
+                            Console.WriteLine("Успех. Строка соответствует грамматике.");
+                            Console.WriteLine(parser2.OutputConfigure);
+                        } else {
                             Console.WriteLine("Не успех. Строка не соответствует грамматике.");
                         }
                         break;
@@ -1043,7 +1074,7 @@ namespace MPTranslator
 
                     case "7": //МП - автоматы
                         // (q0,i@i,S) |- (q1,i@i,F@L)
-                        // S->F@L 
+                        // S->F@L
                         // F->i L->i
                         myMp Mp = new myMp(new ArrayList() { "q0", "q1", "q2", "qf" },
                                            new ArrayList() { "a", "b" },
@@ -1060,7 +1091,7 @@ namespace MPTranslator
                         Console.Write("Debug Mp ");
                         Mp.debugDelta();
                         Console.WriteLine("\nEnter the line :");
-                        Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());                       
+                        Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());
 
                         /*
                         Mp.addDeltaRule("q0", "a", "z0", new ArrayList() { "q1" }, new ArrayList() { "a", "z0" });
@@ -1073,9 +1104,9 @@ namespace MPTranslator
 
                         Console.WriteLine("\nEnter the line :");
                         Console.WriteLine(Mp.Execute(Console.ReadLine()).ToString());
-                        */ 
+                        */
                         break;
-                    
+
                     case "8": //МП-преобразователь
                         TranslGrammar gramm = new TranslGrammar(new ArrayList() { "a", "b" },
                                                                 new ArrayList() { "S", "A" },
@@ -1093,7 +1124,7 @@ namespace MPTranslator
 
                     case "9": //МП - автоматы
                         translMp mp = new translMp(new ArrayList() { "q0", "q1", "q2","q3", "qf" },
-                                                   new ArrayList() { "a", "b" }, 
+                                                   new ArrayList() { "a", "b" },
                                                    new ArrayList() { "z0", "a" },
                                                    "q0",
                                                    "z0",
@@ -1111,7 +1142,7 @@ namespace MPTranslator
                         Console.WriteLine("\nEnter the line :");
                         Console.WriteLine(mp.Execute(Console.ReadLine()).ToString());
                         break;
-                                    
+
                     default :
                         Console.WriteLine("Выход из программы");
                         return;

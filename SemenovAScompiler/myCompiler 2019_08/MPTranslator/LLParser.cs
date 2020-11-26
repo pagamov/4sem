@@ -7,11 +7,11 @@ using System.Collections;
 
 namespace MPTranslator
 {
-    
+
     class LLParser
     {
         private myGrammar G;
-        private Stack<string> Stack;
+        private Stack <string> Stack;
         private DataTable Table;
         public string OutputConfigure = "";
         Hashtable FirstSet = new Hashtable();
@@ -146,7 +146,7 @@ namespace MPTranslator
                 // ERROR
                 return false;
             }
-            
+
             return true;
         }
 
@@ -166,35 +166,29 @@ namespace MPTranslator
             int i = 0;
             string currInputSymbol = input[i].ToString();
             string currStackSymbol;
-            do
-            {
+            do {
                 currStackSymbol = Stack.Peek();
-                if (G.T.Contains(currStackSymbol)) // в вершине стека находится терминал
-                {
+                if (G.T.Contains(currStackSymbol)) {
                     Console.Write("   В вершине стека находится терминал ");
                     Console.WriteLine(currStackSymbol);
-                    if (currInputSymbol == currStackSymbol) // распознанный символ равен вершине стека
-                    {
+                    if (currInputSymbol == currStackSymbol) {
                         Console.WriteLine("      И данный терминал равен вершине стека...");
                         // Извлечь из стека верхний элемент и распознать символ входной последовательности (ВЫБРОС)
                         Console.WriteLine("      Извлекаю из стека верхний элемент, распознаю символ входной последовательности...");
                         Console.WriteLine("      ВЫБРОС!");
                         Stack.Pop();
-                        if (i != input.Length)
-                        {
+                        if (i != input.Length) {
                             i++;
                         }
                         currInputSymbol = (i == input.Length) ? "EoI" : input[i].ToString();
 
                         Console.Write("      (");
 
-                        for (int k = i; k < input.Length; k++)
-                        {
+                        for (int k = i; k < input.Length; k++) {
                             Console.Write(input[k]);
                         }
                         Console.Write(", ");
-                        for (int k = 0; k < Stack.Count; k++)
-                        {
+                        for (int k = 0; k < Stack.Count; k++) {
                             string[] tmp = new string[Stack.Count];//Цикл просто выводит стек на экран!
                             Stack.CopyTo(tmp, 0);
                             Console.Write(tmp[k]);
@@ -202,9 +196,7 @@ namespace MPTranslator
                         Console.Write(", ");
                         Console.Write(OutputConfigure);
                         Console.WriteLine(")\n");
-                    }
-                    else
-                    {
+                    } else {
                         // ERROR
                         Console.WriteLine("      ОШИБКА! Данный терминал не равен вершине стека!");
                         Console.Write(currInputSymbol);
@@ -213,9 +205,8 @@ namespace MPTranslator
                         Console.Write("\n");
                         return false;
                     }
-                }
-                else // если в вершине стека нетерминал
-                {
+                } else {
+                    // если в вершине стека нетерминал
                     Console.Write("   В вершине стека нетерминал ");
                     Console.WriteLine(currStackSymbol);
                     DataRow custRows = Table.Select("VT = '" + currStackSymbol.Replace(@"'", @"''") + "'", null)[0];
@@ -331,7 +322,9 @@ namespace MPTranslator
                 }
             } //  пока вносятся изменения
         }
+
         public List<string> First(string X) { return ((HashSet<string>)FirstSet[X]).ToList(); }
+
         public List<string> First(List<string> Y)
         {
             List<string> result = new List<string>();

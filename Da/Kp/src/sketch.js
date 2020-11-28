@@ -238,6 +238,11 @@ function parse_board() {
 	// write data to the file
 	writer.write(start_node + " " + end_node + "\n");
 	writer.write(number_of_nodes + " " + number_of_connections + "\n");
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			writer.write(board[i][j].x + " " + board[i][j].y + "\n");
+		}
+	}
 	for (var i = 0; i < res_conect.length; i++) {
 		writer.write(res_conect[i].from + " " + res_conect[i].to + " " + res_conect[i].waight + "\n");
 	}
@@ -329,7 +334,7 @@ function draw_board() {
 }
 
 function setup() {
-	createCanvas(800, 400);
+	createCanvas(1400, 800);
 	background(background_color);
 	setup_board();
 }

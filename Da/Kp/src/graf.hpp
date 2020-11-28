@@ -5,6 +5,7 @@
 #include <map>
 #include <algorithm>
 #include <limits>
+#include <cmath>
 
 using namespace std;
 
@@ -24,13 +25,14 @@ public:
         }
     }
 
-    void dijkstra(int target) {
-        nodes[target].h = 0;
+    vector <int> Dijkstra(int from, int to) {
+        vector <int> res;
+        nodes[from].h = 0;
         map <int, Node *> q;
         pair <int, Node *> curr;
         vector <bool> visited(size, false);
         int min_curr;
-        q[target] = &nodes[target];
+        q[from] = &nodes[from];
         while (q.size() != 0) {
             min_curr = __INT_MAX__;
             // find minimum from open
@@ -39,6 +41,16 @@ public:
                     curr = elem;
                     min_curr = elem.second->h;
                 }
+            }
+
+            if (curr.first == to) {
+                res.push_back(to);
+                int p = curr.second->parent;
+                while (p != -1) {
+                    res.push_back(p);
+                    p = nodes[p].parent;
+                }
+                break;
             }
             // for its child add them to open
             // remake childs h paremetr
@@ -50,6 +62,7 @@ public:
                     int h_min = curr.second->h + curr.second->edges[child.first].waight;
                     if (h_min < nodes[child.first].h) {
                         nodes[child.first].h = h_min;
+                        nodes[child.first].parent = curr.first;
                     }
                 }
             }
@@ -57,12 +70,20 @@ public:
             q.erase(curr.first);
             visited[curr.first] = true;
         }
+        if (res.size() != 0) {
+            reverse(res.begin(), res.end());
+        } else {
+            res.push_back(-1);
+        }
+        return res;
     }
 
     vector <int> aStar(int from, int to) {
         vector <int> res;
         vector <bool> visited(size, false);
         nodes[from].d = 0;
+        nodes[from].h = (int)sqrt(pow(nodes[to].x - nodes[from].x, 2) + pow(nodes[to].y - nodes[from].y, 2));
+        // cout << nodes[from].h << "\n";
         map <int, Node *> q;
         pair <int, Node *> curr;
         int min_curr;
@@ -72,21 +93,26 @@ public:
         while (q.size() != 0) {
             min_curr = __INT_MAX__;
             // find minimum from open q
+            // cout << "q: ";
             for (pair <int, Node *> elem : q) {
+                // cout << elem.first << " ";
                 int d_h_curr = elem.second->d + elem.second->h; // d + h of some in q
                 if (d_h_curr < min_curr) {
                     curr = elem;
                     min_curr = d_h_curr; // new min d + h
                 }
             }
+            // cout << "\n";
 
             if (curr.first == to) {
+                // cout << "hello!\n";
                 res.push_back(to);
                 int p = curr.second->parent;
                 while (p != -1) {
                     res.push_back(p);
                     p = nodes[p].parent;
                 }
+                break;
             }
             // for its child add them to open
             // if h ==  max int we wont add it to open q !!!
@@ -96,13 +122,19 @@ public:
                 if (visited[child.first] != true) {
                     // add child to open q
                     Node * curr_child = child.second.node;
+                    curr_child->h = (int)sqrt(pow(nodes[to].x - nodes[child.first].x, 2) + pow(nodes[to].y - nodes[child.first].y, 2));
                     if (curr_child->h != __INT_MAX__) {
                         q[child.first] = &nodes[child.first];
                     }
                     // if less d + h
-                    if (curr_child->parent == -1 || curr_child->d > child.second.waight) {
-                        curr_child->d = child.second.waight;
+                    if (curr_child->parent == -1) {
                         curr_child->parent = curr.first;
+                        curr_child->d = child.second.waight + nodes[curr_child->parent].d;
+                    } else {
+                        if (curr_child->d > child.second.waight + nodes[curr.first].d) {
+                            curr_child->parent = curr.first;
+                            curr_child->d = child.second.waight + nodes[curr_child->parent].d;
+                        }
                     }
                 }
             }
@@ -119,6 +151,11 @@ public:
         return res;
     }
 
+    void setCoord(int node, int x, int y) {
+        nodes[node].x = x;
+        nodes[node].y = y;
+    }
+
     void changeEdge(const int from, const int to, const int waight) {
         if (waight == 0) {
             nodes[from].edges.erase(to);
@@ -129,51 +166,12 @@ public:
         }
     }
 
-    pair <vector <int>, int> /*vector <int> - order of nodes; int - min waight*/ findShortestPath (const int from, const int to) {
-        queue <pair <int, Node *>> q; // main queue
-        vector <bool> visited(size, false); // vector for visited nodes
-        pair <int, Node *> current; // curent value
-        vector <int> parent(size, -1); // for each node u have parent node and it index
-        pair <vector <int>, int> res({}, 0); // final res data arr of number of noder and min C
-
-        q.push(pair <int, Node *> (from, &nodes[from]));
-        visited[from] = true;
-        while(!q.empty()) {
-            current = q.front(); //make current node in front
-            q.pop();    // delete it from queue
-            for (pair <int, Edge> edge : (*current.second).edges) {
-                // for all next in current node
-                // edge.first - number of next node
-                // edge.second - edge himself
-                if (!visited[edge.first]) {
-                    // next node not in visited
-                    visited[edge.first] = true;
-                    parent[edge.first] = current.first;
-                    if (edge.first == to) {
-                        // we meet final
-                        res.first.push_back(to); // add to res final node
-                        res.second = __INT_MAX__; // now min C eq max int (infinity)
-
-                        while (res.first.back() != from) {
-                            int curr = res.first.back(), /*current form last*/
-                                parent_curr = parent[curr], /*parent of current*/
-                                parent_curr_waight = nodes[parent_curr].edges[curr].waight; /*waight of way btn them from parent to relative*/
-                            if (parent_curr_waight < res.second) {
-                                // if some edge less than min C
-                                res.second = parent_curr_waight;
-                            }
-                            res.first.push_back(parent_curr);
-                        }
-                        reverse(res.first.begin(), res.first.end());
-                        return res;
-                    } else {
-                        // we not met final
-                        q.push(pair <int, Node *> (edge.first, edge.second.node));
-                    }
-                }
-            }
+    void clearGraf() {
+        for (int i = 0; i < size; i++) {
+            nodes[i].d = __INT_MAX__;
+            nodes[i].h = __INT_MAX__;
+            nodes[i].parent = -1;
         }
-        return res;
     }
 
     ~Graf() = default;
@@ -188,11 +186,12 @@ private:
         ~Edge() = default;
     };
     struct Node {
-        Node() : d(__INT_MAX__), h(__INT_MAX__), parent(-1) {}
+        Node() : d(__INT_MAX__), h(__INT_MAX__), parent(-1), x(0), y(0) {}
         unordered_map <int, Edge> edges;
         int d;
         int h;
         int parent;
+        int x, y;
         ~Node() = default;
     };
     int size;

@@ -177,7 +177,6 @@ function mouseReleased() {
 			}
 		}
 	}
-
 }
 
 function draw_menu() {

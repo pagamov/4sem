@@ -32,7 +32,7 @@ int main() {
         cout << path << " ";
     }
     cout << "\n";
-    cout << "distance: " << res_1.first << "\n";
+    // cout << "distance: " << res_1.first << "\n";
 
     G.clearGraf();
 
@@ -44,7 +44,7 @@ int main() {
         cout << path << " ";
     }
     cout << "\n";
-    cout << "distance: " << res_2.first << "\n";
+    // cout << "distance: " << res_2.first << "\n";
 
     return 0;
 }

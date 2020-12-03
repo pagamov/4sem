@@ -1,0 +1,647 @@
+\section{Тест производительности}
+
+Алгоритм A* и допустим, и обходит при этом минимальное количество вершин, благодаря тому, что он работает с «оптимистичной» оценкой пути через вершину. Оптимистичной в том смысле, что, если он пойдёт через эту вершину, у алгоритма «есть шанс», что реальная стоимость результата будет равна этой оценке, но никак не меньше. Но, поскольку A* является информированным алгоритмом, такое равенство может быть вполне возможным.
+
+Когда A* завершает поиск, он, согласно определению, нашёл путь, истинная стоимость которого меньше, чем оценка стоимости любого пути через любой открытый узел. Но поскольку эти оценки являются оптимистичными, соответствующие узлы можно без сомнений отбросить. Иначе говоря, A* никогда не упустит возможности минимизировать длину пути, и потому является допустимым.
+
+Предположим теперь, что некий алгоритм B вернул в качестве результата путь, длина которого больше оценки стоимости пути через некоторую вершину. На основании эвристической информации, для алгоритма B нельзя исключить возможность, что этот путь имел и меньшую реальную длину, чем результат. Соответственно, пока алгоритм B просмотрел меньше вершин, чем A*, он не будет допустимым. Итак, A* проходит наименьшее количество вершин графа среди допустимых алгоритмов, использующих такую же точную (или менее точную) эвристику.
+
+Временна́я сложность алгоритма A* зависит от эвристики. В худшем случае, число вершин, исследуемых алгоритмом, растёт экспоненциально по сравнению с длиной оптимального пути, но сложность становится полиномиальной, когда эвристика удовлетворяет следующему условию:
+
+$$|h(x)-h^{*}(x)|\leq O(\log h^{*}(x));$$
+где h* — оптимальная эвристика, то есть точная оценка расстояния из вершины x к цели. Другими словами, ошибка h(x) не должна расти быстрее, чем логарифм от оптимальной эвристики.
+
+Но ещё бо́льшую проблему, чем временна́я сложность, представляют собой потребляемые алгоритмом ресурсы памяти. В худшем случае ему приходится помнить экспоненциальное количество узлов. Для борьбы с этим было предложено несколько вариаций алгоритма, таких как алгоритм A* с итеративным углублением (iterative deeping A*, IDA*), A* с ограничением памяти (memory-bounded A*, MA*), упрощённый MA* (simplified MA*, SMA*) и рекурсивный поиск по первому наилучшему совпадению (recursive best-first search, RBFS).
+
+\pagebreak
+
+\section{Исходный код}
+
+\begin{lstlisting}
+<!-- index.html -->
+<html>
+    <head>
+    </head>
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
+        <script src="addons/p5.sound.js"></script>
+        <script src="sketch.js"></script>
+    </body>
+</html>
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Javascript]
+//sketch.js
+'use strict'
+new p5();
+
+var background_color = '#F7F7F7';
+var border_color = '#C5CBE3';
+var start_color = '#F13C20';
+var end_color = '#4056A1';
+var block_color = '#D79522';
+var void_color = '#EFE2BA';
+
+var open_cell_color = '#BCE7FD';
+var closed_cell_color = '#30475E';
+var main_parent_color = '#6a097d';
+
+var points = {start:null, end:null};
+
+var board = [];
+var curent_state = 'null';
+var index_show = false;
+
+function valid_cell(i, j) {
+	if (i >= 0 && i < board.length && j >= 0 && j < board[i].length && board[i][j].closed != true && board[i][j].color != block_color) {
+		 // removed form condition && board[i][j].open != true
+		return true;
+	}
+	return false;
+}
+
+function find_close_cells(p_i, p_j) {
+	var res = [];
+	for (var i = 0; i < 3; i++) {
+		if (valid_cell(p_i - 1 + i, p_j - 1)) {
+			res.push({i:p_i - 1 + i, j:p_j - 1});
+		}
+	}
+
+	if (valid_cell(p_i - 1, p_j)) {
+		res.push({i:p_i - 1, j:p_j});
+	}
+
+	if (valid_cell(p_i + 1, p_j)) {
+		res.push({i:p_i + 1, j:p_j});
+	}
+
+	for (var i = 0; i < 3; i++) {
+		if (valid_cell(p_i - 1 + i, p_j + 1)) {
+			res.push({i:p_i - 1 + i, j:p_j + 1});
+		}
+	}
+	return res;
+}
+
+function A_star() {
+	let open = [];
+	var start = {i:points.start.i,j:points.start.j};
+	var end = {i:points.end.i,j:points.end.j};
+
+	open.push(board[start.i][start.j]); // color it like open blue circle
+	board[start.i][start.j].open = true;
+	board[start.i][start.j].d = 0;
+	board[start.i][start.j].h = (abs(start.i - end.i) + abs(start.j - end.j)) * 10;
+
+	while (open.length != 0) {
+		// find closest open
+		var min_el = null;
+		var min_dist = 100**100;
+		for (var i = 0; i < open.length; i++) {
+			if (open[i].open && open[i].d + open[i].h < min_dist) {
+				min_el = open[i];
+				min_dist = open[i].d + open[i].h;
+			}
+		}
+		// delete it // color it black circle
+		var p_i = min_el.i;
+		var p_j = min_el.j;
+		board[p_i][p_j].open = false;
+		board[p_i][p_j].closed = true;
+		//if it is end then draw path
+		if (p_i == end.i && p_j == end.j) {
+			// draw big lines from end to start
+			var p = min_el;
+			while (p.parent != null) {
+				//draw line
+				p.main_parent = p.parent;
+				p = p.parent;
+			}
+			return;
+		}
+		// for every child he have add them to open array // color them in blue circle
+		var childs = find_close_cells(p_i, p_j);
+		for (var i = 0; i < childs.length; i++) {
+			open.push(board[childs[i].i][childs[i].j]);
+			board[childs[i].i][childs[i].j].open = true;
+			board[childs[i].i][childs[i].j].h = (abs(childs[i].i - end.i) + abs(childs[i].j - end.j)) * 10;
+			var new_d = board[p_i][p_j].d;
+
+			if (abs(childs[i].i - p_i) + abs(childs[i].j - p_j) == 2) {
+				new_d += 14;
+			} else {
+				new_d += 10;
+			}
+
+			if (board[childs[i].i][childs[i].j].parent == null) {
+				board[childs[i].i][childs[i].j].parent = board[p_i][p_j];
+				board[childs[i].i][childs[i].j].d = new_d;
+			} else {
+				if (board[childs[i].i][childs[i].j].d > new_d) {
+					board[childs[i].i][childs[i].j].parent = board[p_i][p_j];
+				}
+			}
+		}
+		// delayTime(0.5);
+	}
+}
+
+function keyTyped() {
+    if (key === 's') {
+        curent_state = 'draw start';
+    } else if (key === 'e') {
+        curent_state = 'draw end';
+    } else if (key === 'b') {
+        curent_state = 'draw block';
+    } else if (key === 'v') {
+        curent_state = 'draw void';
+    } else if (key === 'f') {
+		if (points.start != null && points.end != null) {
+			A_star();
+		}
+    } else if (key === 'r') {
+		for (var i = 0; i < board.length; i++) {
+			for (var j = 0; j < board[i].length; j++) {
+				board[i][j].parent = null;
+				board[i][j].main_parent = null;
+				board[i][j].closed = false;
+				board[i][j].open = false;
+				board[i][j].d = 0;
+				board[i][j].h = 0;
+			}
+		}
+    } else if (key === 'p') {
+		parse_board();
+	} else if (key === 'i') {
+		if (index_show == true) {
+			index_show = false;
+		} else {
+			index_show = true;
+		}
+	}
+}
+
+function mouseReleased() {
+	var fat = 50;
+	var curr = null;
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			var a = board[i][j];
+			if (a.x < mouseX && mouseX < a.x + fat && a.y < mouseY && mouseY < a.y + fat) {
+				curr = {i:i,j:j};
+				if (curent_state == 'draw start') {
+					if (points.start != null) {
+						board[points.start.i][points.start.j].color = void_color;
+					}
+					board[curr.i][curr.j].color = start_color;
+					points.start = curr;
+				} else if (curent_state == 'draw end') {
+					if (points.end != null) {
+						board[points.end.i][points.end.j].color = void_color;
+					}
+					board[curr.i][curr.j].color = end_color;
+					points.end = curr;
+				} else if (curent_state == 'draw block') {
+					board[curr.i][curr.j].color = block_color;
+				} else if (curent_state == 'draw void') {
+					board[curr.i][curr.j].color = void_color;
+				}
+				return;
+			}
+		}
+	}
+}
+
+function draw_menu() {
+	noStroke();
+	textSize(20);
+	fill(0, 102, 153);
+	text('curr state: ', 50, 30);
+	fill(0);
+	text(curent_state, 150, 30);
+
+	fill(0, 102, 153);
+	text('index show: ', 300, 30);
+	fill(0);
+	text(index_show, 420, 30);
+}
+
+function parse_board() {
+	// dont work if f is pressed!!!!
+	// need to exicude non 'f' board!!!
+	var start_node;
+	var end_node;
+	var number_of_nodes = 0;
+	var number_of_connections = 0;
+
+	var res_conect = [];
+
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			number_of_nodes += 1;
+			if (board[i][j].color != block_color) {
+				if (board[i][j].color == start_color) {
+					start_node = board[i].length * i + j + 1;
+				}
+				if (board[i][j].color == end_color) {
+					end_node = board[i].length * i + j + 1;
+				}
+
+				var close = find_close_cells(i, j);
+
+				for (var iter = 0; iter < close.length; iter++) {
+					number_of_connections += 1;
+
+					var d;
+					if (abs(close[iter].i - i) + abs(close[iter].j - j) == 2) {
+						d = 14;
+					} else {
+						d = 10;
+					}
+					res_conect.push({from: board[i].length * i + j + 1,
+									 to: board[close[iter].i].length * close[iter].i + close[iter].j + 1,
+								 	 waight: d});
+				}
+			}
+		}
+	}
+
+	let writer = createWriter('newFile.txt');
+	// write data to the file
+	writer.write(start_node + " " + end_node + "\n");
+	writer.write(number_of_nodes + " " + number_of_connections + "\n");
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			writer.write(board[i][j].x + " " + board[i][j].y + "\n");
+		}
+	}
+	for (var i = 0; i < res_conect.length; i++) {
+		writer.write(res_conect[i].from + " " + res_conect[i].to + " " + res_conect[i].waight + "\n");
+	}
+	// close the PrintWriter and save the file
+	writer.close();
+}
+
+function setup_board() {
+	var fat = 50;
+	for (var i = 50; i < width - 50; i += fat) {
+		var a = [];
+		for (var j = 50; j < height - 50; j += fat) {
+			a.push({x:i, y:j, i:null, j:null,
+					color:void_color,
+					open:false, closed:false,
+					parent:null, main_parent:null,
+					d:0, h:0});
+		}
+		board.push(a);
+	}
+
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			board[i][j].i = i;
+			board[i][j].j = j;
+		}
+	}
+}
+
+function draw_board() {
+	var fat = 50;
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			var a = board[i][j];
+			stroke(border_color);
+			strokeWeight(2);
+			fill(a.color);
+			rect(a.x, a.y, fat, fat, 10);
+			if (a.open == true) {
+				stroke(open_cell_color);
+				strokeWeight(4);
+				noFill();
+				ellipse(a.x + 25, a.y + 25, 20);
+			}
+			if (a.closed == true) {
+				stroke(closed_cell_color);
+				strokeWeight(4);
+				noFill();
+				ellipse(a.x + 25, a.y + 25, 20);
+			}
+			if (a.d != 0) {
+				noStroke();
+				textSize(10);
+				fill(0);
+				text(a.d, a.x + 4, a.y + 40);
+			}
+			if (a.h != 0) {
+				noStroke();
+				textSize(10);
+				fill(0);
+				text(a.h, a.x + 36, a.y + 40);
+			}
+			if (index_show == true) {
+				noStroke();
+				textSize(10);
+				fill(0);
+				text(board[i].length * i + j + 1, a.x + 5, a.y + 10);
+			}
+		}
+	}
+
+	for (var i = 0; i < board.length; i++) {
+		for (var j = 0; j < board[i].length; j++) {
+			var a = board[i][j];
+			if (a.parent != null) {
+				stroke(closed_cell_color);
+				strokeWeight(1);
+				noFill();
+				line(a.parent.x + 25, a.parent.y + 25, a.x + 25, a.y + 25);
+			}
+			if (a.main_parent != null) {
+				stroke(main_parent_color);
+				strokeWeight(4);
+				noFill();
+				line(a.parent.x + 25, a.parent.y + 25, a.x + 25, a.y + 25);
+			}
+		}
+	}
+}
+
+function setup() {
+	// createCanvas(1400, 800);
+	createCanvas(500, 500);
+	background(background_color);
+	setup_board();
+}
+
+function draw() {
+	background(background_color);
+	draw_board();
+	draw_menu();
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+//graf.hpp
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <map>
+#include <algorithm>
+#include <limits>
+#include <cmath>
+
+using namespace std;
+
+class Graf {
+public:
+    Graf() = default;
+    Graf(int size) : size(size), nodes(size) {}
+
+    void print() {
+        for (int i = 0; i < size; i++) {
+            cout << i << " " << "d: " << nodes[i].d << " h: " << nodes[i].h << "\n";
+            cout << '\t';
+            for (pair <int, Edge> child : nodes[i].edges) {
+                cout << child.first << " ";
+            }
+            cout << "\n";
+        }
+    }
+
+    pair <int, vector <int>> Dijkstra(int from, int to) {
+        vector <int> res;
+        int distance = 0;
+        nodes[from].h = 0;
+        map <int, Node *> q;
+        pair <int, Node *> curr;
+        vector <bool> visited(size, false);
+        int min_curr;
+        q[from] = &nodes[from];
+        while (q.size() != 0) {
+            min_curr = __INT_MAX__;
+            // find minimum from open
+            for (pair <int, Node *> elem : q) {
+                if (elem.second->h < min_curr) {
+                    curr = elem;
+                    min_curr = elem.second->h;
+                }
+            }
+
+            if (curr.first == to) {
+                res.push_back(to);
+                int p = curr.second->parent;
+                distance = nodes[curr.first].h;
+                while (p != -1) {
+                    res.push_back(p);
+                    p = nodes[p].parent;
+                }
+                break;
+            }
+            // for its child add them to open
+            // remake childs h paremetr
+            for (pair <int, Edge> child : curr.second->edges) {
+                if (visited[child.first] != true) {
+                    // add child to open q
+                    q[child.first] = &nodes[child.first];
+                    // if less h make new
+                    int h_min = curr.second->h + curr.second->edges[child.first].waight;
+                    if (h_min < nodes[child.first].h) {
+                        nodes[child.first].h = h_min;
+                        nodes[child.first].parent = curr.first;
+                    }
+                }
+            }
+            // delete curr from q
+            q.erase(curr.first);
+            visited[curr.first] = true;
+        }
+        if (res.size() != 0) {
+            reverse(res.begin(), res.end());
+        } else {
+            res.push_back(-1);
+        }
+        pair <int, vector <int>> r(distance, res);
+        return r;
+    }
+
+    pair <int, vector <int>>  aStar(int from, int to) {
+        vector <int> res;
+        int distance = 0;
+        vector <bool> visited(size, false);
+        nodes[from].d = 0;
+        nodes[from].h = (int)sqrt(pow(nodes[to].x - nodes[from].x, 2) + pow(nodes[to].y - nodes[from].y, 2));
+        // cout << nodes[from].h << "\n";
+        map <int, Node *> q;
+        pair <int, Node *> curr;
+        int min_curr;
+        if (nodes[from].h != __INT_MAX__) {
+            q[from] = &nodes[from];
+        }
+        while (q.size() != 0) {
+            min_curr = __INT_MAX__;
+            // find minimum from open q
+            // cout << "q: ";
+            for (pair <int, Node *> elem : q) {
+                // cout << elem.first << " ";
+                int d_h_curr = elem.second->d + elem.second->h; // d + h of some in q
+                if (d_h_curr < min_curr) {
+                    curr = elem;
+                    min_curr = d_h_curr; // new min d + h
+                }
+            }
+            // cout << "\n";
+
+            if (curr.first == to) {
+                // cout << "hello!\n";
+                res.push_back(to);
+                distance = nodes[curr.first].d;
+                int p = curr.second->parent;
+                while (p != -1) {
+                    res.push_back(p);
+                    p = nodes[p].parent;
+                }
+                break;
+            }
+            // for its child add them to open
+            // if h ==  max int we wont add it to open q !!!
+
+            // remake childs d paremetr
+            for (pair <int, Edge> child : curr.second->edges) {
+                if (visited[child.first] != true) {
+                    // add child to open q
+                    Node * curr_child = child.second.node;
+                    curr_child->h = (int)sqrt(pow(nodes[to].x - nodes[child.first].x, 2) + pow(nodes[to].y - nodes[child.first].y, 2));
+                    if (curr_child->h != __INT_MAX__) {
+                        q[child.first] = &nodes[child.first];
+                    }
+                    // if less d + h
+                    if (curr_child->parent == -1) {
+                        curr_child->parent = curr.first;
+                        curr_child->d = child.second.waight + nodes[curr_child->parent].d;
+                    } else {
+                        if (curr_child->d > child.second.waight + nodes[curr.first].d) {
+                            curr_child->parent = curr.first;
+                            curr_child->d = child.second.waight + nodes[curr_child->parent].d;
+                        }
+                    }
+                }
+            }
+            // delete curr from q
+            q.erase(curr.first);
+            visited[curr.first] = true;
+        }
+
+        if (res.size() != 0) {
+            reverse(res.begin(), res.end());
+        } else {
+            res.push_back(-1);
+        }
+        pair <int, vector <int>> r(distance, res);
+        return r;
+    }
+
+    void setCoord(int node, int x, int y) {
+        nodes[node].x = x;
+        nodes[node].y = y;
+    }
+
+    void changeEdge(const int from, const int to, const int waight) {
+        if (waight == 0) {
+            nodes[from].edges.erase(to);
+            nodes[to].edges.erase(from);
+        } else {
+            nodes[from].edges[to] = Edge(&nodes[to], waight);
+            nodes[to].edges[from] = Edge(&nodes[from], waight);
+        }
+    }
+
+    void clearGraf() {
+        for (int i = 0; i < size; i++) {
+            nodes[i].d = __INT_MAX__;
+            nodes[i].h = __INT_MAX__;
+            nodes[i].parent = -1;
+        }
+    }
+
+    ~Graf() = default;
+
+private:
+    struct Node;
+    struct Edge {
+        Edge() = default;
+        Edge(Node * node, const int waight) : node(node), waight(waight) {}
+        Node * node;
+        int waight;
+        ~Edge() = default;
+    };
+    struct Node {
+        Node() : d(__INT_MAX__), h(__INT_MAX__), parent(-1), x(0), y(0) {}
+        unordered_map <int, Edge> edges;
+        int d;
+        int h;
+        int parent;
+        int x, y;
+        ~Node() = default;
+    };
+    int size;
+    vector <Node> nodes;
+};
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+//main.cpp
+#include <iostream>
+#include <vector>
+#include <time.h>
+#include "graf.hpp"
+
+using namespace std;
+
+int main() {
+    clock_t start_clock;
+    int start, end;
+    cin >> start >> end;
+
+    int n, m, x, y, from, to, waight;
+    cin >> n >> m;
+    Graf G(n + 1);
+
+    for (int i = 1; i <= n; ++i) {
+        cin >> x >> y;
+        G.setCoord(i, x, y);
+    }
+
+    for (int i = 0; i < m; ++i) {
+        cin >> from >> to >> waight;
+        G.changeEdge(from, to, waight);
+    }
+
+    start_clock = clock();
+    pair <int, vector <int>> res_1 = G.aStar(start, end);
+
+    printf("A star time: %f\t\t\n", (double)(clock() - start_clock) / CLOCKS_PER_SEC);
+    for (int path : res_1.second) {
+        cout << path << " ";
+    }
+    cout << "\n";
+    cout << "distance: " << res_1.first << "\n";
+
+    G.clearGraf();
+
+    start_clock = clock();
+    pair <int, vector <int>> res_2 = G.Dijkstra(start, end);
+
+    printf("Dijkstra time : %f\t\t\n", (double)(clock() - start_clock) / CLOCKS_PER_SEC);
+    for (int path : res_2.second) {
+        cout << path << " ";
+    }
+    cout << "\n";
+    cout << "distance: " << res_2.first << "\n";
+
+    return 0;
+}
+\end{lstlisting}
+
+\pagebreak

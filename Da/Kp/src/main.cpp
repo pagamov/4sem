@@ -25,24 +25,26 @@ int main() {
     }
 
     start_clock = clock();
-    vector <int> res_1 = G.aStar(start, end);
+    pair <int, vector <int>> res_1 = G.aStar(start, end);
 
     printf("A star time: %f\t\t\n", (double)(clock() - start_clock) / CLOCKS_PER_SEC);
-    for (int path : res_1) {
+    for (int path : res_1.second) {
         cout << path << " ";
     }
     cout << "\n";
+    cout << "distance: " << res_1.first << "\n";
 
     G.clearGraf();
 
     start_clock = clock();
-    vector <int> res_2 = G.Dijkstra(start, end);
+    pair <int, vector <int>> res_2 = G.Dijkstra(start, end);
 
     printf("Dijkstra time : %f\t\t\n", (double)(clock() - start_clock) / CLOCKS_PER_SEC);
-    for (int path : res_2) {
+    for (int path : res_2.second) {
         cout << path << " ";
     }
     cout << "\n";
+    cout << "distance: " << res_2.first << "\n";
 
     return 0;
 }

@@ -25,8 +25,9 @@ public:
         }
     }
 
-    vector <int> Dijkstra(int from, int to) {
+    pair <int, vector <int>> Dijkstra(int from, int to) {
         vector <int> res;
+        int distance = 0;
         nodes[from].h = 0;
         map <int, Node *> q;
         pair <int, Node *> curr;
@@ -46,6 +47,7 @@ public:
             if (curr.first == to) {
                 res.push_back(to);
                 int p = curr.second->parent;
+                distance = nodes[curr.first].h;
                 while (p != -1) {
                     res.push_back(p);
                     p = nodes[p].parent;
@@ -75,11 +77,13 @@ public:
         } else {
             res.push_back(-1);
         }
-        return res;
+        pair <int, vector <int>> r(distance, res);
+        return r;
     }
 
-    vector <int> aStar(int from, int to) {
+    pair <int, vector <int>>  aStar(int from, int to) {
         vector <int> res;
+        int distance = 0;
         vector <bool> visited(size, false);
         nodes[from].d = 0;
         nodes[from].h = (int)sqrt(pow(nodes[to].x - nodes[from].x, 2) + pow(nodes[to].y - nodes[from].y, 2));
@@ -107,6 +111,7 @@ public:
             if (curr.first == to) {
                 // cout << "hello!\n";
                 res.push_back(to);
+                distance = nodes[curr.first].d;
                 int p = curr.second->parent;
                 while (p != -1) {
                     res.push_back(p);
@@ -148,7 +153,8 @@ public:
         } else {
             res.push_back(-1);
         }
-        return res;
+        pair <int, vector <int>> r(distance, res);
+        return r;
     }
 
     void setCoord(int node, int x, int y) {

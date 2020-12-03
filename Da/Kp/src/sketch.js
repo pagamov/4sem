@@ -333,7 +333,8 @@ function draw_board() {
 }
 
 function setup() {
-	createCanvas(1400, 800);
+	// createCanvas(1400, 800);
+	createCanvas(500, 500);
 	background(background_color);
 	setup_board();
 }
